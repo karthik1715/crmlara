@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\User;
 use Hash;
-  
+use App\Models\Contact;
+use App\Models\Segment;
+use App\Models\Campaign;
+
 class AuthController extends Controller
 {
+
     /**
      * Write code on Method
      *
@@ -45,8 +49,13 @@ class AuthController extends Controller
    
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+
+            $contacts  = Contact::all(); 
+            $segments  = Segment::all();
+            $campaigns = Campaign::all();
+
             return redirect()->intended('dashboard')
-                        ->withSuccess('You have Successfully loggedin');
+                        ->withSuccess('You have Successfully loggedin', compact('contacts','segments','campaigns'));
         }
   
         return redirect("/")->withSuccess('Oppes! You have entered invalid credentials');
@@ -79,7 +88,12 @@ class AuthController extends Controller
     public function dashboard()
     {
         if(Auth::check()){
-            return view('admin.dashboard');
+
+            $contacts  = Contact::all(); 
+            $segments  = Segment::all();
+            $campaigns = Campaign::all();
+
+            return view('admin.dashboard')->with(compact('contacts','segments','campaigns'));
         }
   
         return redirect("/")->withSuccess('Opps! You do not have access');

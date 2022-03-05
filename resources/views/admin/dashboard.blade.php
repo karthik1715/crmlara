@@ -27,14 +27,17 @@
                             <div class="card-category">This Month gtege statistics in system</div>
                             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
                                 <div class="px-2 pb-2 pb-md-0 text-center">
+                                    <input type="hidden" id="cont_counts" value="{{ $contacts->count() }}" />
                                     <div id="circles-1"></div>
                                     <h6 class="fw-bold mt-3 mb-0">{{ __('app.dashboard.contacts') }}</h6>
                                 </div>
                                 <div class="px-2 pb-2 pb-md-0 text-center">
+                                    <input type="hidden" id="segment_counts" value="{{ $segments->count() }}" />
                                     <div id="circles-2"></div>
-                                    <h6 class="fw-bold mt-3 mb-0">{{ __('app.dashboard.deals') }}</h6>
+                                    <h6 class="fw-bold mt-3 mb-0">{{ __('app.dashboard.segments') }}</h6>
                                 </div>
                                 <div class="px-2 pb-2 pb-md-0 text-center">
+                                    <input type="hidden" id="campaign_counts" value="{{ $campaigns->count() }}" />
                                     <div id="circles-3"></div>
                                     <h6 class="fw-bold mt-3 mb-0">{{ __('app.dashboard.campaigns') }}</h6>
                                 </div>
@@ -361,3 +364,8 @@
         </div>
     </div>
 @stop
+@section('script')
+<script>
+    $("#circles-2").attr("text", 20);
+</script>
+@endsection
