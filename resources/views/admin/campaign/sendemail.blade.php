@@ -1,0 +1,1 @@
+{!! $maildata['template_content'] !!}
