@@ -13,7 +13,7 @@ class ContactRepository implements IContactRepository
     
     protected $contact = null;
 
-    public function getAllContacts( $collection = [] )
+    public function getAllContacts( $collection = [], $pagLimit= null )
     {
         $contacts = Contact::orderBy('id','DESC');
         if( isset($collection['q']) && ($collection['q'] != '') ){
@@ -27,7 +27,12 @@ class ContactRepository implements IContactRepository
 
         }
 
-        $contactlists = $contacts->paginate(config('global.pagination_records'));
+        if( $pagLimit == 'all') {
+            $contactlists = $contacts->where('status', '=', 'active')->get();
+        } else {
+            $contactlists = $contacts->paginate(config('global.pagination_records'));
+        }
+
         // $contacts = Contact::orderBy('id','DESC')->paginate(config('global.pagination_records'));
 
         $contactsResources = ContactResource::collection($contactlists);

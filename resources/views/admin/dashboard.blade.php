@@ -12,8 +12,8 @@
                         <h5 class="text-white op-7 mb-2">{{ __('app.dashboard.sales') }}</h5>
                     </div>
                     <div class="ml-md-auto py-2 py-md-0">
-                        <a href="#" class="btn btn-white btn-border btn-round mr-2">{{ __('app.dashboard.deals') }}</a>
-                        <a href="#" class="btn btn-secondary btn-round">{{ __('app.dashboard.contacts') }}</a>
+                        <a href="{{url('/contact')}}" class="btn btn-white btn-border btn-round mr-2">{{ __('app.dashboard.contacts') }}</a>
+                        <a href="{{url('/campaign')}}" class="btn btn-secondary btn-round">{{ __('app.dashboard.campaigns') }}</a>
                     </div>
                 </div>
             </div>
@@ -47,54 +47,51 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card full-height">
-                        <div class="card-body">
-                            <div class="card-title">Total income & spend statistics</div>
-                            <div class="card-category">This Year statistics in system</div>
-                            <div class="row py-3">
-                                <div class="col-md-4 d-flex flex-column justify-content-around">
-                                    <div>
-                                        <h6 class="fw-bold text-uppercase text-success op-8">Total Income</h6>
-                                        <h3 class="fw-bold">$14.22</h3>
-                                    </div>
-                                    <div>
-                                        <h6 class="fw-bold text-uppercase text-danger op-8">Total Spend</h6>
-                                        <h3 class="fw-bold">$3,891</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div id="chart-container">
-                                        <canvas id="totalIncomeChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-header">
+                            <div class="card-title">{{ __('app.dashboard.campaigns') }}</div>
+                        </div>
+                        <div class="card-body" style="height: 10px;overflow: hidden;">
+                            <marquee behavior="scroll" direction="down" onmouseover="this.stop();" onmouseleave="this.start();"><p></p>
+                                @isset($campaigns)
+                                    @forelse ($campaigns as $item)
+                                        <p class="text-center"><strong><a href="#">{{ $item->name }}</a></strong></p>
+                                    @empty
+                                        <p class="text-center"><strong>{{ __('app.general.norecord') }}</strong></p>
+                                    @endforelse
+                                @endisset
+                            <p></p></marquee>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <div class="card card-dark bg-primary-gradient">
-                        <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-right"><i class="fas fa-sitemap"></i></div>
-                            <h2 class="mb-2">17</h2>
-                            <p>{{ __('app.contacts.organization.title') }}</p>
-                            <div class="pull-in sparkline-fix chart-as-background">
-                                <div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+                    <a href="{{url('/organization')}}">
+                        <div class="card card-dark bg-primary-gradient">
+                            <div class="card-body pb-0">
+                                <div class="h1 fw-bold float-right"><i class="fas fa-sitemap"></i></div>
+                                <h2 class="mb-2">{{ $organizations->count() }}</h2>
+                                <p>{{ __('app.contacts.organization.title') }}</p>
+                                <div class="pull-in sparkline-fix chart-as-background">
+                                    <div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
-                    <div class="card card-dark bg-secondary-gradient">
-                        <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-right"><i class="fas fa-user"></i></div>
-                            <h2 class="mb-2">28</h2>
-                            <p>{{ __('app.contacts.person.title') }}</p>
-                            <div class="pull-in sparkline-fix chart-as-background">
-                                <div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+                    <a href="{{url('/contact')}}">
+                        <div class="card card-dark bg-secondary-gradient">
+                            <div class="card-body pb-0">
+                                <div class="h1 fw-bold float-right"><i class="fas fa-user"></i></div>
+                                <h2 class="mb-2">{{ $contacts->count() }}</h2>
+                                <p>{{ __('app.contacts.person.title') }}</p>
+                                <div class="pull-in sparkline-fix chart-as-background">
+                                    <div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
                     <div class="card card-dark bg-success2">
@@ -116,6 +113,32 @@
                             <p>{{ __('app.dashboard.deal_lost') }}</p>
                             <div class="pull-in sparkline-fix chart-as-background">
                                 <div id="lineChart3"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Line Chart</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Bar Chart</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="barChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -366,6 +389,31 @@
 @stop
 @section('script')
 <script>
-    $("#circles-2").attr("text", 20);
+$(function(){
+
+    var url = "{{url('getmonthchart')}}";
+    $.ajax({
+    url: url,
+    type: 'POST',
+    data: { 
+        _token : "{{ csrf_token() }}",
+    },
+    }).done(function(response) {
+        lionChartFunc(response);
+    });
+
+    var url = "{{url('getcampaignchart')}}";
+    $.ajax({
+    url: url,
+    type: 'POST',
+    data: { 
+        _token : "{{ csrf_token() }}",
+    },
+    }).done(function(response) {
+        barChartFunc(response);
+    });
+
+});
+
 </script>
 @endsection

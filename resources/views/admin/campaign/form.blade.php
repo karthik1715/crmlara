@@ -482,7 +482,8 @@ var editor_config = {
                    return;
                }
                // console.log(json.location);
-               success(json.location);
+               success('http://coderzvisiontech.com/crm/storage/app/' + json.location);
+            //    success(json.location);
            };
            formData = new FormData();
            formData.append('file', blobInfo.blob(), blobInfo.filename());

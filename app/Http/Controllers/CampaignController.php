@@ -149,8 +149,8 @@ class CampaignController extends Controller
             if( $check ) {
                 $imageFullName = time().rand(100,9999).'.'.$extension;
                 $path = $files->storeAs($imageFolder, $imageFullName);
-                $url = url('/').'/storage/app/';
-                $filetowrite = $url.$path;
+                // $url = url('/').'/storage/app/';
+                $filetowrite = $imageFolder.'/'.$imageFullName;
             }
             echo json_encode(array('location' => $filetowrite));
         }

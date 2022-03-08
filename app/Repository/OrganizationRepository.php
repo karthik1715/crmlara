@@ -13,7 +13,7 @@ class OrganizationRepository implements IOrganizationRepository
 {   
     protected $organization = null;
 
-    public function getAllOrganizations( $collection = [] )
+    public function getAllOrganizations( $collection = [], $pagLimit= null )
     {
         $organizations = Organization::orderBy('id','DESC');
         if( isset($collection['org_search']) && ($collection['org_search'] != '') ){
@@ -24,7 +24,13 @@ class OrganizationRepository implements IOrganizationRepository
             });
 
         }
-        $organizationlists  = $organizations->paginate(config('global.pagination_records'));
+
+        if( $pagLimit == 'all') {
+            $organizationlists  = $organizations->where('status', '=', 'active')->get();
+        } else {
+            $organizationlists  = $organizations->paginate(config('global.pagination_records'));
+        }
+
         $organizationsList  = OrganizationResource::collection($organizationlists);
         return $organizationsList;
         // $organizations = Organization::where('id', '=', 1)->paginate(3);

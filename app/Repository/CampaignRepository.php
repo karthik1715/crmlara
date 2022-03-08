@@ -15,19 +15,25 @@ class CampaignRepository implements ICampaignRepository
 {   
     protected $campaign = null;
 
-    public function getAllCampaigns( $collection = [] )
+    public function getAllCampaigns( $collection = [], $pagLimit= null )
     {
         $campaigns = Campaign::orderBy('id','DESC');
         if( isset($collection['q']) && ($collection['q'] != '') ){
             
             $searchData = $collection['q'] ?? '';
             $campaigns->when($searchData, function ($q) use($searchData) { 
-                return $q->orWhere('name', 'like', '%'. $searchData . '%');
+                return $q->orWhere('name', 'like', '%'. $searchData . '%')
+                         ->orWhere('subject', 'like', '%'. $searchData . '%');
             });
 
         }
 
-        $campaignlists = $campaigns->paginate(config('global.pagination_records'));
+        if( $pagLimit == 'all') {
+            $campaignlists = $campaigns->where('status', '=', 'active')->orderBy('id','DESC')->get();
+        } else {
+            $campaignlists = $campaigns->paginate(config('global.pagination_records'));
+        }
+
         $campaignsResources = CampaignResource::collection($campaignlists);
         return $campaignsResources;
     }

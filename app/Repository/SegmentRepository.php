@@ -13,7 +13,7 @@ class SegmentRepository implements ISegmentRepository
     
     protected $segment = null;
 
-    public function getAllSegments( $collection = [] )
+    public function getAllSegments( $collection = [], $pagLimit= null )
     {
         $segments = Segment::orderBy('id','DESC');
         if( isset($collection['seg_search']) && ($collection['seg_search'] != '') ){
@@ -24,7 +24,13 @@ class SegmentRepository implements ISegmentRepository
                          ->orWhere('description', 'like', '%'. $searchData . '%');
             });
         }
-        $segmentlists  = $segments->paginate(config('global.pagination_records'));
+
+        if( $pagLimit == 'all') {
+            $segmentlists  = $segments->where('status', '=', 'active')->get();
+        } else {
+            $segmentlists  = $segments->paginate(config('global.pagination_records'));
+        }
+
         $segmentsResources = SegmentResource::collection($segmentlists);
         return $segmentsResources;
     }

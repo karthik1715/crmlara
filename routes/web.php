@@ -50,6 +50,8 @@ Route::get('dashboard', [AuthController::class, 'dashboard']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('checkemail', [ContactController::class,'checkEmail']);
 Route::post('attributevalue', [CampaignController::class,'attributeValue']);
+Route::post('getmonthchart', [AuthController::class,'getMonthChart']);
+Route::post('getcampaignchart', [AuthController::class,'getCampaignChart']);
 
 Route::get('/autocomplete-search', [TypeaheadController::class,'autocompleteSearch']);
 Route::get('/catg-autocomplete-search', [TypeaheadController::class,'catgorySearch']);

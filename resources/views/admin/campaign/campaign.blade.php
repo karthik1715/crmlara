@@ -19,19 +19,38 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div class="col-md-6">
-                                <h4 class="page-title">{{ __('app.campaigns.calist') }}</h4>
-                            </div>
-                            <div class="col-md-6 d-flex">
-                                <a class="btn btn-primary btn-round ml-auto mr-2 mb-2" href = "{{ route('campaign.create') }}"><i class="fa fa-plus"></i>
+                    <div class="card-header row">
+                        <div class="col-md-9">
+                            <h4 class="card-title">{{ __('app.campaigns.calist') }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- <a class="btn btn-primary btn-round ml-auto" href = "#updatePeopleModal" data-target="#updatePeopleModal" data-toggle="modal" ><i class="fa fa-upload"></i>{{ __('app.general.import') }}</a>
+                            <a class="btn btn-primary btn-round ml-auto" href="{{ route('contactexport') }}"><i class="fa fa-download"></i>{{ __('app.general.export') }}</a> -->
+                            <a class="btn btn-primary btn-round ml-auto mr-2 mb-2" href = "{{ route('campaign.create') }}"><i class="fa fa-plus"></i>
                                 {{ __('app.campaigns.add-title') }}</a>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <div class="col-md-12">
+                            <form action="{{ route('campaign.list') }}" >
+                                <div class="row">
+                                    <div class="col-md-7">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-icon">
+                                            <input type="text" name="q" value="{{ isset($_GET['q']) ? $_GET['q']: '' }}" placeholder="{{ __('app.general.findsearch') }}" class="form-control"/>
+                                            <span class="input-icon-addon">
+                                                <i class="fa fa-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" class="btn btn-primary" value="{{ __('app.general.search') }}"/>
+                                    </div>
+                                    
+                                </div>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             @include('includes.flash-message')
                             <table class="table table-striped table-inverse">
@@ -120,13 +139,13 @@
                                     $to     = ($campaigns->currentPage() * $campaigns ->perPage()) ;
                                     $total  = $campaigns->total();
                                     $cal = ( $to >$total )? $total : $to ;
-                                    $search = isset($_GET['org_search']) ? $_GET['org_search']: '';
+                                    $search = isset($_GET['q']) ? $_GET['q']: '';
                                 @endphp
                                 <div class="mt-4 p-4 box has-text-centered">
                                     Showing {{ $from }} to {{ $cal }} of {{ $total  }} 
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    {!! $campaigns->appends(['org_search' => $search ])->links() !!}
+                                    {!! $campaigns->appends(['q' => $search ])->links() !!}
                                 </div>
                             @endif
                         </div>
