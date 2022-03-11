@@ -211,7 +211,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Account Setting</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{url('/')}}">Logout</a>
+                        <a class="dropdown-item" href="{{url('/logout')}}">Logout</a>
                      </li>
                   </div>
                </ul>

@@ -406,6 +406,7 @@ $(function(){
             template : template,
         },
         success: function (response) {
+            console.log(response);
             myResponse = response;
             // myResponse = [{
             //         text: 'Menu item 1',
@@ -495,15 +496,31 @@ var editor_config = {
         function intialize( data, editor ) {
             var uniqueArray = [];
             for (var i = 0; i < data.length; i++){
-                data[i].onclick = function (index) {
-                    return function() { 
-                        if(uniqueArray.indexOf(index) === -1) {
-                            uniqueArray.push(index);
-                            $("#selectAttribute").val(uniqueArray);
+                
+                if(data[i].count == undefined || data[i].count == 1 ) {
+                    data[i].onclick = function (index) {
+                        return function() { 
+                            if(uniqueArray.indexOf(index) === -1) {
+                                uniqueArray.push(index);
+                                $("#selectAttribute").val(uniqueArray);
+                            }
+                            editor.insertContent('&nbsp;<em>{% '+ data[index].value +' %}</em>');
                         }
-                        editor.insertContent('&nbsp;<em>{% '+ data[index].value +' %}</em>');
+                    }(i); 
+                } else {
+                    var count = data[i].count;
+                    if(count > 0) {
+                        for (var j = 0; j < count; j++){
+                            
+                            data[i].menu[j].onclick = function (index1) {
+                                return function() { 
+                                    editor.insertContent('&nbsp;<em>{% '+ this.settings.value +' %}</em>');
+                                }
+                            }(j); 
+
+                        }
                     }
-                }(i);
+                }
             }
             return data;
         }
@@ -513,9 +530,31 @@ var editor_config = {
             text        : 'Placeholders',
             icon        : false,
             onclick: function() {
-                editor.insertContent('&nbsp;<strong>You clicked the button!</strong>');
+                // editor.insertContent('&nbsp;<strong>You clicked the button!</strong>');
             },
             menu:intialize( myResponse, editor ),
+            // menu:[{
+            //     text: 'Menu item 1',
+            //     onclick: function() {
+            //     editor.insertContent('&nbsp;<strong>Menu item 1 text inserted here!</strong>&nbsp;');
+            //     }
+            // }, {
+            //     text: 'Menu item 2',
+            //     menu: [{
+            //     text: 'Submenu item 1',
+            //     onclick: function() {
+            //         editor.insertContent('&nbsp;<em>Submenu item 1 text inserted here!</em>&nbsp;');
+            //     }
+            //     }, 
+            //     {
+            //     text: 'Submenu item 2',
+            //     onclick: function() {
+            //         editor.insertContent('&nbsp;<em>Submenu item 2 text inserted here!</em>&nbsp;');
+            //     }
+            //     }
+            // ]
+            // }],
+
         });
     },
     // file_picker_callback : function(callback, value, meta) {

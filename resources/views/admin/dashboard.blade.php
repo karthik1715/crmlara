@@ -51,7 +51,7 @@
                             <div class="card-title">{{ __('app.dashboard.campaigns') }}</div>
                         </div>
                         <div class="card-body" style="height: 10px;overflow: hidden;">
-                            <marquee behavior="scroll" direction="down" onmouseover="this.stop();" onmouseleave="this.start();"><p></p>
+                            <marquee behavior="scroll" direction="down" scrollamount="4" onmouseover="this.stop();" onmouseleave="this.start();"><p></p>
                                 @isset($campaigns)
                                     @forelse ($campaigns as $item)
                                         <p class="text-center"><strong><a href="#">{{ $item->name }}</a></strong></p>
@@ -389,7 +389,7 @@
 @stop
 @section('script')
 <script>
-$(function(){
+// $(function(){
 
     var url = "{{url('getmonthchart')}}";
     $.ajax({
@@ -413,7 +413,7 @@ $(function(){
         barChartFunc(response);
     });
 
-});
+// });
 
 </script>
 @endsection

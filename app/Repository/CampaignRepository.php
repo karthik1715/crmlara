@@ -153,8 +153,10 @@ class CampaignRepository implements ICampaignRepository
         if( $segment) {
 
             foreach($segment->contacts as $contact) {
+
                 $template_content = $content;
                 $count =  preg_match_all('#\{\%(.*?)\%\}#', $template_content, $match);
+                
                 if( $count > 0 ) {
                    
                     for( $i = 0; $i < $count; $i++ ) {
@@ -163,15 +165,15 @@ class CampaignRepository implements ICampaignRepository
                             $jcount =  count($match[$i]); 
                             for( $j = 0; $j < $jcount; $j++ ) {
 
-                                if(($match[$i][$j]) == '{% user_name %}') {
+                                if(($match[$i][$j]) == '{% name %}') {
                                     $template_content = str_replace( $match[$i][$j], $contact->name, $template_content);
                                 }
 
-                                if(($match[$i][$j]) == '{% user_email %}') {
+                                if(($match[$i][$j]) == '{% email %}') {
                                     $template_content = str_replace( $match[$i][$j], $contact->email, $template_content);
                                 }
 
-                                if(($match[$i][$j]) == '{% user_phone %}') {
+                                if(($match[$i][$j]) == '{% phone %}') {
                                     $template_content = str_replace( $match[$i][$j], $contact->phone, $template_content);
                                 }
                             }

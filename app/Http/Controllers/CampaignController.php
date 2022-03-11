@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\Attributes;
 use App\Http\Controllers\Controller;
 use App\Repository\ICampaignRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -158,15 +160,84 @@ class CampaignController extends Controller
 
     public function attributeValue()
     {
-        $data = array(
+        $data           = [];
+        $resultArr      = [];
+        $attributeArray = [];
+
+        $attributesGroups   = Attributes::select('entity_type', DB::raw('count(*) as total'))
+                                ->groupBy('entity_type')
+                                ->get();
+                        
+        $attributes         = Attributes::select('id','name','code','entity_type')
+                                ->orderBy('id', 'ASC')
+                                ->get();
+
+        foreach($attributesGroups->toArray() as $item) { 
+            $resultArr[$item['entity_type']]['count'] = $item['total'];
+            $attributeValue = $attributes->where('entity_type',$item['entity_type']);
+            
+            if( $item['total'] > 1 ) {
+                $resultArr[$item['entity_type']]['text']    = ucfirst($item['entity_type']);
+                $resultArr[$item['entity_type']]['value']   = $item['entity_type'];
+
+                foreach($attributeValue->toArray() as $multiItems) {
+                    $data[$multiItems['entity_type']]['text']     = $multiItems['name'];
+                    $data[$multiItems['entity_type']]['value']    = $multiItems['code'];
+                    $resultArr[$multiItems['entity_type']]['menu'][]      = $data[$multiItems['entity_type']];
+                }
+
+            } else {
+
+                foreach($attributeValue->toArray() as $singleItem) {
+                    $data[$singleItem['entity_type']]['count'] = $item['total'];
+                    $data[$singleItem['entity_type']]['text']  = $singleItem['name'];
+                    $data[$singleItem['entity_type']]['value'] = $singleItem['code'];
+                    $resultArr[$item['entity_type']] = $data[$singleItem['entity_type']];
+                }
+
+            }
+        }
+        
+        $keys = array_keys($resultArr);
+        if( $keys ) {
+            for( $i = 0; $i < count($resultArr); $i++ ) {
+                $attributeArray[] = $resultArr[$keys[$i]];
+            }
+        }
+
+        /* $data = array(
             array( "text" => "User Name", 
-                   "value" => "user_name" ),
-            array( "text" => "User Email", 
-                   "value" => "user_email" ),
+                   "value" => "user_name",
+                   "count" => 3,
+                   "menu" => 
+                   array( array("text" => "User Name1", 
+                          "value" => "user_name1111"),
+                          array("text" => "User Name2", 
+                          "value" => "user_name2222"),
+                          array("text" => "User Name3", 
+                          "value" => "user_name3333",) ),
+
+                 ),
             array( "text" => "User Phone", 
-                   "value" => "user_phone" ),
-        );
-        return json_encode($data);
+                   "value" => "user_phone",
+                   "count" => 0 ),
+            array( "text" => "Phone Name", 
+                "value" => "phone.leaddd",
+                "count" => 4,
+                "menu" => 
+                    array( array("text" => "Ue1", 
+                            "value" => "u 111"),
+                            array("text" => "2e2", 
+                            "value" => "usd2"),
+                            array("text" => "U32", 
+                            "value" => "ude3333"),
+                            array("text" => "U42", 
+                            "value" => "ude4444") ),
+
+                 ),
+        ); */
+
+        return json_encode($attributeArray);
     }
     
 }

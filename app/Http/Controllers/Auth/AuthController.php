@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Hash;
 use App\Repository\IOrganizationRepository;
@@ -73,7 +73,7 @@ class AuthController extends Controller
                         ->withSuccess('You have Successfully loggedin', compact( 'organizations', 'contacts','segments','campaigns' ));
         }
   
-        return redirect("/")->withSuccess('Oppes! You have entered invalid credentials');
+        return redirect("/")->withError('Oppes! You have entered invalid credentials');
     }
       
     /**
@@ -113,7 +113,7 @@ class AuthController extends Controller
             return view('admin.dashboard')->with(compact('organizations','contacts','segments','campaigns'));
         }
   
-        return redirect("/")->withSuccess('Opps! You do not have access');
+        return redirect("/")->withError('Opps! You do not have access');
     }
 
     public function getMonthChart() {
@@ -184,9 +184,10 @@ class AuthController extends Controller
      * @return response()
      */
     public function logout() {
-        Session::flush();
+        
         Auth::logout();
-  
-        return Redirect('/');
+        Session::flush();
+
+        return Redirect(\URL::previous());
     }
 }

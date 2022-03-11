@@ -36,28 +36,29 @@ Route::get('/token', function () {
 
 Route::get('/clear', function() {
     // $exitCode = Artisan::call('route:cache');
-    // $exitCode = Artisan::call('config:cache');
+    $exitCode = Artisan::call('config:cache');
     $exitCode = Artisan::call('cache:clear');
-    // $exitCode = Artisan::call('view:clear');
-    echo 'All routes cache has just been removed';
+    $exitCode = Artisan::call('view:clear');
+    return 'All routes cache has just been removed';
 });
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
 Route::get('registration', [AuthController::class, 'registration'])->name('register');
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('checkemail', [ContactController::class,'checkEmail']);
-Route::post('attributevalue', [CampaignController::class,'attributeValue']);
-Route::post('getmonthchart', [AuthController::class,'getMonthChart']);
-Route::post('getcampaignchart', [AuthController::class,'getCampaignChart']);
 
-Route::get('/autocomplete-search', [TypeaheadController::class,'autocompleteSearch']);
-Route::get('/catg-autocomplete-search', [TypeaheadController::class,'catgorySearch']);
-Route::get('/seg-autocomplete-search', [TypeaheadController::class,'segmentSearch']);
+Route::group(['middleware' => ['auth']], function() {
 
-// Route::middleware('auth:api')->group(function() {
+        Route::get('dashboard', [AuthController::class, 'dashboard'])->middleware('auth');
+        Route::get('/autocomplete-search', [TypeaheadController::class,'autocompleteSearch']);
+        Route::get('/catg-autocomplete-search', [TypeaheadController::class,'catgorySearch']);
+        Route::get('/seg-autocomplete-search', [TypeaheadController::class,'segmentSearch']);
+
+        Route::post('checkemail', [ContactController::class,'checkEmail']);
+        Route::post('attributevalue', [CampaignController::class,'attributeValue']);
+        Route::post('getmonthchart', [AuthController::class,'getMonthChart']);
+        Route::post('getcampaignchart', [AuthController::class,'getCampaignChart']);
 
     #Contact Policy
     Route::prefix('contact')->group(function () {
@@ -126,8 +127,10 @@ Route::get('/seg-autocomplete-search', [TypeaheadController::class,'segmentSearc
     Route::get('marketing/forms',function(){
         return view('admin.marketing.forms.forms');
     });
+
     #endMarketing
-    // Route::get('/admin/campaigns/email-tracking-detail',function(){
-    //     return view('admin.campaign.statistics');
-    //   });
-// });
+    /* Route::get('/admin/campaigns/email-tracking-detail',function(){
+        return view('admin.campaign.statistics');
+    }); */
+
+});

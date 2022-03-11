@@ -29,13 +29,13 @@
 		<div class="container container-login animated fadeIn">
 			<h3 class="text-center">Sign In To Admin</h3>
 			<div class="login-form">
-				
+				@include('includes.flash-message')
 				<form method="POST" action="{{ route('login.post') }}">
                             @csrf
 					<div class="form-group form-floating-label">
 						<!-- <input id="username" name="username" type="text" class="form-control input-border-bottom" required>
 						<label for="username" class="placeholder">Username</label> -->
-						<input type="text" id="email_address" class="form-control" name="email" required autofocus>
+						<input type="text" id="email_address" class="form-control" name="email" placeholder="Enter Username" required autofocus>
 						@if ($errors->has('email'))
 							<span class="text-danger">{{ $errors->first('email') }}</span>
 						@endif
@@ -46,7 +46,7 @@
 						<div class="show-password">
 							<i class="icon-eye"></i>
 						</div> -->
-						<input type="password" id="password" class="form-control" name="password" required>
+						<input type="password" id="password" class="form-control" name="password" placeholder="Enter Password" required>
 						@if ($errors->has('password'))
 							<span class="text-danger">{{ $errors->first('password') }}</span>
 						@endif
@@ -116,5 +116,4 @@
 	<script src="{{ URL::asset('public/assets/js/core/atlantis.min.js') }}"></script>
 </body>
 
-<!-- Mirrored from demo.themekita.com/atlantis/livepreview/examples/demo1/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 24 Jan 2022 06:31:36 GMT -->
 </html>
