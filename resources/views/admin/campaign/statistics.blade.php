@@ -50,7 +50,7 @@
                         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                           <div class="row pl-3">
                             <div class="col-6 p-0 mb-3  mt-2">
-                              <h2 class="m-0 text-dark"> 116 </h2>
+                              <h2 class="m-0 text-dark"> {{ $campaign['segment_count'] }} </h2>
                               <h5 class="m-0 text-dark"> Total Emails </h5>
                               <small> Total Emails Sent </small>
                             </div>

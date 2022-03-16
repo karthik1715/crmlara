@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/create', [CampaignController::class,'saveCampaign'])->name('campaigncreate');
         Route::get('/edit/{id}', [CampaignController::class,'getCampaign'])->name('campaign.edit');
         Route::post('/edit/{id}', [CampaignController::class,'saveCampaign'])->name('campaign.update');
+        Route::get('/copy/{id}', [CampaignController::class,'copyCampaign'])->name('campaign.copy');
         Route::get('/delete/{id}', [CampaignController::class,'deleteCampaign'])->name('campaign.delete');
         Route::get('/statistics/{id}', [CampaignController::class,'statisticsCampaign'])->name('campaign.statistics');
     });

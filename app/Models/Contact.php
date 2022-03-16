@@ -14,6 +14,10 @@ class Contact extends Model implements Auditable
 
     protected $guarded = [];
 
+    protected $with = [
+        'organization'
+    ];
+
     public function organization()
     {
         return $this->belongsTo(Organization::class);

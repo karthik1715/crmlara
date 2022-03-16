@@ -31,6 +31,89 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="modal fade" id="deleteCampaignModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold">
+                                            {{ __('app.campaigns.delcamp') }} </span> 
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="#" method="get" class="campremove-record-model">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label>{{ __('app.general.deleteMessage') }}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-0 text-center">
+                                        <a href="#">
+                                            <button type="submit" id="addRowButton" class="btn btn-primary">{{ __('app.general.delete') }}</button>
+                                        </a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('app.general.cancel') }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold">
+                                            {{ __('app.campaigns.copycamp') }} </span> 
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="#" method="get" class="copy-campaign-model">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label>{{ __('app.general.copyMessage') }}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-0 text-center">
+                                        <a href="#">
+                                            <button type="submit" id="addRowButton" class="btn btn-primary">{{ __('app.general.clone') }}</button>
+                                        </a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ __('app.general.cancel') }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm" style="max-width: 600px;" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold">
+                                            {{ __('app.general.preview') }} </span> 
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-sm-12" id="previewDiv">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <form action="{{ route('campaign.list') }}" >
                                 <div class="row">
@@ -75,13 +158,13 @@
                                                 <td>{{ !empty( $item->category ) ? $item->category->name:'-' }}</td>
                                                 <td>
                                                     @if( $schedule_status == 0  || $schedule_status == 1 )
-                                                        {{ !empty( $item->campaignDetail ) ? $item->campaignDetail->schedule_datetime:'-' }}
+                                                        {{ ( !empty( $item->campaignDetail ) && !empty( $item->campaignDetail->schedule_datetime ) ) ? $item->campaignDetail->schedule_datetime:'-' }}
                                                     @else
                                                         {{ '-' }}
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @isset( $item->campaignDetail )
+                                                    @if(isset( $item->campaignDetail ))
                                                         @if( $item->campaignDetail->campaign_status == 'draft')
                                                             <i class="icon-check text-default">&emsp;Draft</i>
                                                         @elseif( $schedule_status == 0 )
@@ -89,7 +172,9 @@
                                                         @else
                                                             <i class="icon-clock text-warning">&emsp;Schedule</i>
                                                         @endif
-                                                    @endisset
+
+                                                        <input type="hidden" id="hidden_content_{{ $item->id }}" value="{{ $item->campaignDetail->template_content }}" />
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <p><b>2</b>/2</p>
@@ -97,33 +182,49 @@
                                                 <td>
                                                     <div class="dropdown">
                                                         <a class="dropdown-toggle text-primary" data-toggle="dropdown">
-                                                        <i class="text-center fa-2x mt-2 p-2 fas fa-ellipsis-v"></i>
+                                                            <i class="text-center fa-2x mt-2 p-2 fas fa-ellipsis-v"></i>
                                                         </a>
                                                         <div class="dropdown-menu">
-                                                        @isset( $item->campaignDetail )
-                                                            @if( $item->campaignDetail->campaign_status == 'draft')
+
+                                                            @if(isset($item->campaignDetail))
+                                                                @if( $item->campaignDetail->campaign_status == 'draft')
+                                                                    <a class="dropdown-item text-secondary" href="{{ route('campaign.edit',$item->id) }}">
+                                                                        <i class="fa fa-edit">&nbsp;{{ __('app.general.edit') }}</i>
+                                                                    </a>
+                                                                @elseif( $schedule_status == 0 )
+                                                                    <a class="dropdown-item text-warning" href="{{ route('campaign.statistics',$item->id) }}">
+                                                                        <i class="fas fa-chart-line">&nbsp;{{ __('app.statistics.statistics') }}</i>
+                                                                    </a>
+                                                                @else
+                                                                    <a class="dropdown-item text-warning" href="#">
+                                                                        <i class="icon-clock">&nbsp;{{ __('app.general.reschedule') }}</i>
+                                                                    </a>
+                                                                @endif
+                                                            @else 
                                                                 <a class="dropdown-item text-secondary" href="{{ route('campaign.edit',$item->id) }}">
-                                                                    <i class="fa fa-edit">&nbsp;Edit</i>
-                                                                </a>
-                                                            @elseif( $schedule_status == 0 )
-                                                                <a class="dropdown-item text-warning" href="{{ route('campaign.statistics',$item->id) }}">
-                                                                    <i class="fas fa-chart-line">&nbsp;Statistics</i>
-                                                                </a>
-                                                            @else
-                                                                <a class="dropdown-item text-warning" href="#">
-                                                                    <i class="icon-clock">&nbsp;Reschedule</i>
+                                                                    <i class="fa fa-edit">&nbsp;{{ __('app.general.edit') }}</i>
                                                                 </a>
                                                             @endif
-                                                        @endisset
-                                                        <a class="dropdown-item text-info" href="#">
-                                                            <i class="fas fa-copy">&nbsp; Clone </i>
-                                                        </a>  
-                                                        <a class="dropdown-item text-success" href="#">
-                                                            <i class="fas fa-desktop">&nbsp; Preview </i>
-                                                        </a>
-                                                        <a class="dropdown-item text-danger" href="#">
-                                                            <i class="fas fa-trash">&nbsp;Delete</i>
-                                                        </a>
+                                                        
+                                                            @if(isset($item->campaignDetail))
+                                                                @if( $item->campaignDetail->campaign_status == 'active')
+                                                                    <a class="dropdown-item text-info campaign-copy" data-id="{{$item->id}}" 
+                                                                        data-url="{{ route('campaign.copy',$item->id) }}" data-toggle="modal" 
+                                                                        data-target="#copyModal">
+                                                                        <i class="fa fa-copy">&nbsp;{{ __('app.general.clone') }}</i>
+                                                                    </a>
+                                                                    <a class="dropdown-item text-success campaign-preview" data-id="{{$item->id}}"  data-toggle="modal" 
+                                                                        data-target="#previewModal">
+                                                                        <i class="fa fa-desktop">&nbsp;{{ __('app.general.preview') }}</i>
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+
+                                                            <a class="dropdown-item text-danger campremove-record" data-id="{{$item->id}}" 
+                                                                data-url="{{ route('campaign.delete',$item->id) }}" data-toggle="modal" 
+                                                                data-target="#deleteCampaignModal">
+                                                                <i class="fa fa-trash">&nbsp;{{ __('app.general.delete') }}</i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -156,3 +257,24 @@
     </div>
 </div>
 @stop
+@section('script')
+<script> 
+$('.campremove-record').click(function() {
+    var id = $(this).attr('data-id');
+    var url = $(this).attr('data-url');
+    $(".campremove-record-model").attr("action",url);
+});
+
+$('.campaign-copy').click(function() {
+    var id = $(this).attr('data-id');
+    var url = $(this).attr('data-url');
+    $(".copy-campaign-model").attr("action",url);
+});
+
+$('.campaign-preview').click(function() {
+    var id = $(this).attr('data-id');
+    var content = $("#hidden_content_"+id).val();
+    $("#previewDiv").html(content);
+});
+</script>
+@endsection

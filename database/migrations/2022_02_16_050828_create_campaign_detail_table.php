@@ -23,6 +23,7 @@ class CreateCampaignDetailTable extends Migration
             $table->tinyInteger('sender_email_service_type')->default(0);
             $table->tinyInteger('schedule_status')->default(0);
             $table->timestamp('schedule_datetime')->nullable();
+            $table->tinyInteger('template_type')->default(1);
             $table->text('template_content')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

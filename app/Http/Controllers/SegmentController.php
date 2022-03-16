@@ -67,13 +67,11 @@ class SegmentController extends Controller
     {   
         $collection = $request->except(['_token','_method']);
         
-        if( ! is_null( $id ) ) 
-        {
+        if( ! is_null( $id ) )  {
             $this->segment->createOrUpdate($id, $collection);
             $message =  __('app.segment.update-success');
         }
-        else
-        {
+        else {
             $data = $this->segment->createOrUpdate($id = null, $collection);
             $message =  __('app.segment.create-success');
         }

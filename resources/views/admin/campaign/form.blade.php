@@ -4,6 +4,12 @@
 @stop
 @section('content')
 
+@if(isset($campaign) && isset( $campaign->campaignDetail)) 
+    @if( $campaign->campaignDetail->campaign_status == 'active')
+        <script>alert('Opps! You do not have access');window.location = "{{route('campaign.list')}}"</script>
+    @endif
+@endif
+
 <div class="content">
     <div class="page-inner">
         <div class="page-header">
@@ -173,7 +179,7 @@
                                         <div class="row col-md-12 col-lg-12 border-bottom">
                                             <div class="col-md-4 col-lg-4 form-group">
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="sender_reply_email_status" @isset( $campaign) {{ ( $campaign->campaignDetail->sender_reply_email_status == "1" )? "checked" : "" }} @endisset >
+                                                    <input class="form-check-input" type="checkbox" id="sender_reply_email_status" @if(isset($campaign) && isset( $campaign->campaignDetail)) {{ ( $campaign->campaignDetail->sender_reply_email_status == "1" )? "checked" : "" }} @endif >
                                                     <span class="form-check-sign">{{ __('app.campaigns.reply-content') }}</span>
                                                 </label>
                                             </div>
@@ -186,13 +192,13 @@
                                         <div class="row col-md-12 col-lg-12 border-bottom">
                                             <div class="col-md-3 col-lg-3 form-group pl-4">
                                                 <label class="form-radio-label">
-                                                    <input class="form-radio-input" type="radio" name="sender_email_service_type" value="0" @isset( $campaign) {{ ( $campaign->campaignDetail->sender_email_service_type == "0" )? "checked" : "" }} @endisset >
+                                                    <input class="form-radio-input" type="radio" name="sender_email_service_type" value="0" @if(isset($campaign) && isset( $campaign->campaignDetail)) {{ ( $campaign->campaignDetail->sender_email_service_type == "0" )? "checked" : "" }} @endif >
                                                     <span class="form-radio-sign">Coderz Email Service</span>
                                                 </label>
                                             </div>
                                             <div class="col-md-3 col-lg-3 form-group">
                                                 <label class="form-radio-label ml-3">
-                                                    <input class="form-radio-input" type="radio" name="sender_email_service_type" value="1" @isset( $campaign) {{ ( $campaign->campaignDetail->sender_email_service_type == "1" )? "checked" : "" }} @endisset >
+                                                    <input class="form-radio-input" type="radio" name="sender_email_service_type" value="1" @if(isset($campaign) && isset( $campaign->campaignDetail)) {{ ( $campaign->campaignDetail->sender_email_service_type == "1" )? "checked" : "" }} @endif >
                                                     <span class="form-radio-sign">Use My Own</span>
                                                 </label>
                                             </div>
@@ -203,7 +209,7 @@
                                             </div>
                                             <div class="col-md-1 col-lg-1 form-group">
                                                 <label class="switch">
-                                                    <input type="checkbox" id="schedule_status" @isset( $campaign) {{ ( $campaign->campaignDetail->schedule_status == "1" )? "checked" : "" }} @endisset >
+                                                    <input type="checkbox" id="schedule_status" @if(isset($campaign) && isset( $campaign->campaignDetail)) {{ ( $campaign->campaignDetail->schedule_status == "1" )? "checked" : "" }} @endif >
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
@@ -218,7 +224,7 @@
                                                     @php 
                                                     $schdtime = '';
                                                     @endphp        
-                                                        @isset($campaign) 
+                                                        @if(isset($campaign) && isset( $campaign->campaignDetail))
                                                             @if($campaign->campaignDetail->schedule_datetime != null || $campaign->campaignDetail->schedule_datetime != '') 
                                                                 {{ $schdtime = trim(date('Y-m-d\TH:i', strtotime($campaign->campaignDetail->schedule_datetime))) }}
                                                             @else 
@@ -408,17 +414,6 @@ $(function(){
         success: function (response) {
             console.log(response);
             myResponse = response;
-            // myResponse = [{
-            //         text: 'Menu item 1',
-            //         onclick: function() {
-            //         editor.insertContent('&nbsp;<em>You clicked menu item 1!</em>');
-            //         }
-            // },{
-            //         text: 'Menu item 2',
-            //         onclick: function() {
-            //         editor.insertContent('&nbsp;<em>You clicked menu item 2!</em>');
-            //         }
-            // },];
         },
         error: function (ex) {
             alert(ex.responseText);
@@ -533,53 +528,8 @@ var editor_config = {
                 // editor.insertContent('&nbsp;<strong>You clicked the button!</strong>');
             },
             menu:intialize( myResponse, editor ),
-            // menu:[{
-            //     text: 'Menu item 1',
-            //     onclick: function() {
-            //     editor.insertContent('&nbsp;<strong>Menu item 1 text inserted here!</strong>&nbsp;');
-            //     }
-            // }, {
-            //     text: 'Menu item 2',
-            //     menu: [{
-            //     text: 'Submenu item 1',
-            //     onclick: function() {
-            //         editor.insertContent('&nbsp;<em>Submenu item 1 text inserted here!</em>&nbsp;');
-            //     }
-            //     }, 
-            //     {
-            //     text: 'Submenu item 2',
-            //     onclick: function() {
-            //         editor.insertContent('&nbsp;<em>Submenu item 2 text inserted here!</em>&nbsp;');
-            //     }
-            //     }
-            // ]
-            // }],
-
         });
     },
-    // file_picker_callback : function(callback, value, meta) {
-    //     var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-    //     var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-
-    //     var cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
-    //     if (meta.filetype == 'image') {
-    //     cmsURL = cmsURL + "&type=Images";
-    //     } else {
-    //     cmsURL = cmsURL + "&type=Files";
-    //     }
-
-    //     tinyMCE.activeEditor.windowManager.openUrl({
-    //     url : cmsURL,
-    //     title : 'Filemanager',
-    //     width : x * 0.8,
-    //     height : y * 0.8,
-    //     resizable : "yes",
-    //     close_previous : "no",
-    //     onMessage: (api, message) => {
-    //         callback(message.content);
-    //     }
-    //     });
-    // }
 };
 
 setTimeout(function() { 

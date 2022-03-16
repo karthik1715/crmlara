@@ -67,12 +67,10 @@ class CampaignController extends Controller
     {   
         $collection = $request->except(['_token','_method']);
       
-        if( ! is_null( $id ) ) 
-        {
+        if( ! is_null( $id ) ) {
             $data = $this->campaign->createOrUpdate($id, $collection);
         }
-        else
-        {
+        else {
             $data = $this->campaign->createOrUpdate($id = null, $collection);
         }
         return $data;
@@ -88,14 +86,14 @@ class CampaignController extends Controller
     public function deleteCampaign($id)
     {
         $this->campaign->deleteCampaign($id);
-        $message =  __('app.campaigns.person.delete-success');
+        $message =  __('app.campaigns.delete-success');
         return redirect()->route('campaign.list')->with('success',$message);
     }
 
     public function statisticsCampaign($id)
     {
-        $this->campaign->statisticsCampaign($id);
-        return view('admin.campaign.statistics');
+        $campaign = $this->campaign->statisticsCampaign($id);
+        return view('admin.campaign.statistics', compact('campaign'));
     }
 
     public function checkEmail(Request $request)
@@ -181,8 +179,8 @@ class CampaignController extends Controller
                 $resultArr[$item['entity_type']]['value']   = $item['entity_type'];
 
                 foreach($attributeValue->toArray() as $multiItems) {
-                    $data[$multiItems['entity_type']]['text']     = $multiItems['name'];
-                    $data[$multiItems['entity_type']]['value']    = $multiItems['code'];
+                    $data[$multiItems['entity_type']]['text']     = ucfirst($multiItems['name']);
+                    $data[$multiItems['entity_type']]['value']    = $multiItems['entity_type'].'.'.$multiItems['code'];
                     $resultArr[$multiItems['entity_type']]['menu'][]      = $data[$multiItems['entity_type']];
                 }
 
@@ -190,8 +188,8 @@ class CampaignController extends Controller
 
                 foreach($attributeValue->toArray() as $singleItem) {
                     $data[$singleItem['entity_type']]['count'] = $item['total'];
-                    $data[$singleItem['entity_type']]['text']  = $singleItem['name'];
-                    $data[$singleItem['entity_type']]['value'] = $singleItem['code'];
+                    $data[$singleItem['entity_type']]['text']  = ucfirst($singleItem['entity_type']);
+                    $data[$singleItem['entity_type']]['value'] = $singleItem['entity_type'].'.'.$singleItem['code'];
                     $resultArr[$item['entity_type']] = $data[$singleItem['entity_type']];
                 }
 
@@ -238,6 +236,13 @@ class CampaignController extends Controller
         ); */
 
         return json_encode($attributeArray);
+    }
+
+    public function copyCampaign($id)
+    {
+        $this->campaign->copyCampaign($id);
+        $message =  __('app.campaigns.create-success');
+        return redirect()->route('campaign.list')->with('success',$message);
     }
     
 }

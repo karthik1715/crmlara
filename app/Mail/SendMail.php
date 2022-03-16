@@ -29,6 +29,7 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('admin.campaign.sendemail')->with('maildata', $this->details);
+        return $this->replyTo('karthik@coderzvisiontech.com', 'CoderzCRM')
+                ->markdown('admin.campaign.sendemail')->with('maildata', $this->details);
     }
 }

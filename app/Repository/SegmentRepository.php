@@ -79,10 +79,10 @@ class SegmentRepository implements ISegmentRepository
 
     public function copySegment($id)
     {
-        $segment = Segment::find($id);
-        $newsegment = $segment->replicate();
-        $newsegment->name          = 'Copy_'.$segment->name;
-        $result = $newsegment->save();
+        $segment                = Segment::find($id);
+        $newsegment             = $segment->replicate();
+        $newsegment->name       = rand(1,9999).$segment->name;
+        $result                 = $newsegment->save();
 
         $newsegment->push(); //Push before to get id of $clone
         

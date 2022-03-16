@@ -39,13 +39,13 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="name">{{ __('app.general.name') }}</label>
-                                            <input type="text" name="name" class="form-control" placeholder="{{ __('app.general.name') }}" value="{{ $segment->name ?? '' }}" autocomplete="off">
+                                            <input type="text" name="name" class="form-control" placeholder="{{ __('app.general.name') }}" value="{{ $segment->name ?? '' }}" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="name">{{ __('app.general.description') }}</label>
-                                            <input type="text" name="description" class="form-control" placeholder="{{ __('app.general.description') }}" value="{{ $segment->description ?? '' }}" autocomplete="off">
+                                            <input type="text" name="description" class="form-control" placeholder="{{ __('app.general.description') }}" value="{{ $segment->description ?? '' }}" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

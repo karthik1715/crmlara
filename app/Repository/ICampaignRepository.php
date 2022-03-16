@@ -13,4 +13,6 @@ interface ICampaignRepository
     
     public function statisticsCampaign($id);
 
+    public function copyCampaign($id);
+
 }
