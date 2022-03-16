@@ -174,6 +174,8 @@
                                                         @endif
 
                                                         <input type="hidden" id="hidden_content_{{ $item->id }}" value="{{ $item->campaignDetail->template_content }}" />
+                                                    @else
+                                                        {{ '-' }}
                                                     @endif
                                                 </td>
                                                 <td>
