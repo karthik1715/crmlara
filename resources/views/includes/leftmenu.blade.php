@@ -120,49 +120,44 @@
                         <p>{{ __('app.dashboard.activities') }}</p>
                     </a>
                 </li>
+                
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#submenu">
-                        <i class="fas fa-cog"></i>
+                    <a data-toggle="collapse" href="#settings">
+                        <i class="fas fa-address-book"></i>
                         <p>{{ __('app.dashboard.settings') }}</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="submenu">
+                    <div class="collapse" id="settings">
                         <ul class="nav nav-primary nav-collapse">
                             <li>
-                                <a data-toggle="collapse" href="#subnav1">
-                                    <i class="fas fa-user-cog"></i>
-                                    <span class="sub-item">{{ __('app.dashboard.user_settings') }}</span>
-                                </a>
-                                <a data-toggle="collapse" href="#subnav1">
-                                    <i class="fas fa-users-cog"></i>
-                                    <span class="sub-item">{{ __('app.dashboard.team_settings') }}</span>
-                                </a>
-                                <a data-toggle="collapse" href="#subnav1">
+                                <a href="{{ url('/deals/pipeline') }}">
                                     <i class="fas fa-draw-polygon"></i>
                                     <span class="sub-item">{{ __('app.dashboard.pipeline') }}</span>
                                 </a>
-                                <a data-toggle="collapse" href="#subnav1">
+                            </li>    
+                            <li>
+                                <a href="#">
                                     <i class="fas fa-ticket-alt"></i>
                                     <span class="sub-item">{{ __('app.dashboard.ticket') }}</span>
                                 </a>
-                                <a data-toggle="collapse" href="#subnav1">
+                            </li>
+                            <li>
+                                <a href="#">
                                     <i class="fas fa-cubes"></i>
                                     <span class="sub-item">{{ __('app.dashboard.audit_trail') }}</span>
                                 </a>
-                                <!-- <div class="collapse" id="subnav1">
-                                    <ul class="nav nav-collapse subnav">
-                                        <li>
-                                            <a href="#">
-                                                <span class="sub-item">Level 2</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <span class="sub-item">Level 2</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div> -->
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span class="sub-item">{{ __('app.dashboard.user_settings') }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-users-cog"></i>
+                                    <span class="sub-item">{{ __('app.dashboard.team_settings') }}</span>
+                                </a>
                             </li>
                         </ul>
                     </div>

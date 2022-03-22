@@ -145,40 +145,46 @@
                   <div class="quick-actions-scroll scrollbar-outer">
                      <div class="quick-actions-items">
                         <div class="row m-0">
-                           <a class="col-6 col-md-4 p-0" href="#">
+                           <a class="col-6 col-md-4 p-0" href="{{ route('organization.create') }}">
                               <div class="quick-actions-item">
-                                 <i class="flaticon-file-1"></i>
-                                 <span class="text">Generated Report</span>
+                                 <i class="fas fa-building"></i>
+                                 <span class="text">{{ __('app.contacts.organization.create-title') }}</span>
+                              </div>
+                           </a>
+                           <a class="col-6 col-md-4 p-0" href="{{ route('contact.create') }}">
+                              <div class="quick-actions-item">
+                                 <i class="fas fa-user"></i>
+                                 <span class="text">{{ __('app.contacts.person.add-title') }}</span>
+                              </div>
+                           </a>
+                           <a class="col-6 col-md-4 p-0" href="{{ route('segment.create') }}">
+                              <div class="quick-actions-item">
+                                 <i class="icon-target"></i>
+                                 <span class="text">{{ __('app.segment.create-title') }}</span>
+                              </div>
+                           </a>
+                           <a class="col-6 col-md-4 p-0" href="{{ route('campaign.create') }}">
+                              <div class="quick-actions-item">
+                                 <i class="fas fa-bullhorn"></i>
+                                 <span class="text">{{ __('app.campaigns.add-title') }}</span>
+                              </div>
+                           </a>
+                           <a class="col-6 col-md-4 p-0" href="{{ url('/deals/pipeline') }}">
+                              <div class="quick-actions-item">
+                                 <i class="fa fa-plus"></i>
+                                 <span class="text">{{ __('app.deals.add-pipeline') }}</span>
+                              </div>
+                           </a>
+                           <a class="col-6 col-md-4 p-0" href="{{ url('/deal/create') }}">
+                              <div class="quick-actions-item">
+                                 <i class="flaticon-price-tag"></i>
+                                 <span class="text">{{ __('app.deals.create-title') }}</span>
                               </div>
                            </a>
                            <a class="col-6 col-md-4 p-0" href="#">
                               <div class="quick-actions-item">
-                                 <i class="flaticon-database"></i>
-                                 <span class="text">Create New Database</span>
-                              </div>
-                           </a>
-                           <a class="col-6 col-md-4 p-0" href="#">
-                              <div class="quick-actions-item">
-                                 <i class="flaticon-pen"></i>
-                                 <span class="text">Create New Post</span>
-                              </div>
-                           </a>
-                           <a class="col-6 col-md-4 p-0" href="#">
-                              <div class="quick-actions-item">
-                                 <i class="flaticon-interface-1"></i>
-                                 <span class="text">Create New Task</span>
-                              </div>
-                           </a>
-                           <a class="col-6 col-md-4 p-0" href="#">
-                              <div class="quick-actions-item">
-                                 <i class="flaticon-list"></i>
-                                 <span class="text">Completed Tasks</span>
-                              </div>
-                           </a>
-                           <a class="col-6 col-md-4 p-0" href="#">
-                              <div class="quick-actions-item">
-                                 <i class="flaticon-file"></i>
-                                 <span class="text">Create New Invoice</span>
+                                 <i class="fas fa-calendar-alt"></i>
+                                 <span class="text">{{ __('app.dashboard.activities') }}</span>
                               </div>
                            </a>
                         </div>

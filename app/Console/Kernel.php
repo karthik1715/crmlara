@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\SendEmailJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+            // $schedule->command('hello:world')->everyMinute();
+        // $schedule->call(function(){
+        //     info("Called every minute");
+        // })->everyMinute();
+        // $details = array();
+        // $schedule->job(new SendEmailJob($details))->everyMinute();
     }
 
     /**

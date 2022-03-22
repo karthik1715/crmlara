@@ -46,44 +46,18 @@
 
 $(function(){
     $('.nav-primary li a').filter(function(){return this.href==location.href}).parent().addClass('active').siblings().removeClass('active')
-    $('.nav-primary li a').click(function(){
-        $(this).parent().addClass('active').siblings().removeClass('active');   
-    })
 })
 
-// $('.nav-item  a').click(function(){
-//     alert('hi');
-//     $(this).parent().addClass('active').siblings().removeClass('active');
-//     var liObj = $(this).closest('li');
-//     liObj.find("a").addClass("active"); 
-// });
-
-// $('.nav-item  a').click(function(){
-//     alert('hi');
-//     $(this).parent().addClass('active').siblings().removeClass('active');
-//     var liObj = $(this).closest('li');
-//     liObj.find("a").addClass("active"); 
-// });
-// $(function(){
-//     $('.nav-item > div > ul > li ').click(function () {
-//         alert('hai');
-//         var clickedItem = $( this );
-//         clickedItem.addClass( "active" );
-//         $( ".nav-primary .nav-item" ).each( function() {
-//             $( this ).removeClass( "active" );
-//         });
-//     });
-// });
-// $(document).ready(function() {
-    //     $( ".nav-primary .nav-item" ).bind( "click", function(event) {
-    //         event.preventDefault();
-    //         var clickedItem = $( this );
-    //         $( ".nav-primary .nav-item" ).each( function() {
-    //             $( this ).removeClass( "active" );
-    //         });
-    //         clickedItem.addClass( "active" );
-    //     });
-    // });
+$('.nav-primary ul li').find('a').each(function () {
+    var link = new RegExp($(this).attr('href')); //Check if some menu compares inside your the browsers link
+    if (link.test(document.location.href)) {
+        if(!$(this).parents().hasClass('active')){
+            $(this).parents('li').addClass('active').siblings().removeClass('active');  
+            $(this).parents('div').addClass(' show') 
+            $(this).parents('li').find('a').attr("aria-expanded","true");
+        }
+    }
+});
 
 $('.btnNext').click(function() {
     $('.nav-pills .active').parent().next('li').find('a').trigger('click');
