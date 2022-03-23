@@ -106,7 +106,8 @@
                                         <div class="col-md-6 col-lg-6 form-group">
                                             <label for="name">
                                             {{ __('app.campaigns.create-new-segment-campaign') }}</label><br>
-                                            <button type="button" class="btn btn-primary">{{ __('app.segment.create-title') }}</button>
+                                            <a class="btn btn-primary btn-round ml-auto mr-2 mb-2" target="_blank" href = "{{ route('campsegment.create','campaign') }}"><i class="fa fa-plus"></i>
+                                            {{ __('app.segment.create-title') }}</a>
                                         </div>
                                         <div class="col-md-4 col-lg-4 form-group">
                                             <label id="seg_name"></label>

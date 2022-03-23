@@ -40,6 +40,7 @@
                                         <div class="form-group">
                                             <label for="name">{{ __('app.general.name') }}</label>
                                             <input type="text" name="name" class="form-control" placeholder="{{ __('app.general.name') }}" value="{{ $segment->name ?? '' }}" autocomplete="off" required>
+                                            <input type="hidden" name="campsegment" value="{{ $campsegment ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-8">

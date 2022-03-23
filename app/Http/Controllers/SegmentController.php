@@ -35,10 +35,11 @@ class SegmentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function createSegment()
+    public function createSegment( $campaign = null )
     {
+        $campsegment = $campaign;
         $contacts = Contact::paginate(config('global.pagination_records'));
-        return View::make('admin.marketing.segment.form', compact('contacts'));
+        return View::make('admin.marketing.segment.form', compact('contacts','campsegment'));
     }
 
     /**
@@ -66,6 +67,7 @@ class SegmentController extends Controller
     public function saveSegment(Request $request, $id = null)
     {   
         $collection = $request->except(['_token','_method']);
+        $campsegment = $collection['campsegment'];
         
         if( ! is_null( $id ) )  {
             $this->segment->createOrUpdate($id, $collection);
@@ -75,7 +77,11 @@ class SegmentController extends Controller
             $data = $this->segment->createOrUpdate($id = null, $collection);
             $message =  __('app.segment.create-success');
         }
-        return redirect()->route('segment.list')->with('success',$message);
+        if($campsegment == 'campaign') {
+            return "<script>alert('".$message ."');window.close();</script>";
+        } else {
+            return redirect()->route('segment.list')->with('success',$message);
+        }
     }
 
     /**

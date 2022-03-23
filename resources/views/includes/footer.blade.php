@@ -44,9 +44,9 @@
 
 <script type="text/javascript">
 
-$(function(){
-    $('.nav-primary li a').filter(function(){return this.href==location.href}).parent().addClass('active').siblings().removeClass('active')
-})
+// $(function(){
+//     $('.nav-primary li a').filter(function(){return this.href==location.href}).parent().addClass('active').siblings().removeClass('active')
+// })
 
 $('.nav-primary ul li').find('a').each(function () {
     var link = new RegExp($(this).attr('href')); //Check if some menu compares inside your the browsers link
@@ -55,6 +55,15 @@ $('.nav-primary ul li').find('a').each(function () {
             $(this).parents('li').addClass('active').siblings().removeClass('active');  
             $(this).parents('div').addClass(' show') 
             $(this).parents('li').find('a').attr("aria-expanded","true");
+        }
+    }
+});
+
+$('.nav-primary li').find('a').each(function () {
+    var link = new RegExp($(this).attr('href')); //Check if some menu compares inside your the browsers link
+    if (link.test(document.location.href)) {
+        if(!$(this).parents().hasClass('active')){
+            $(this).parents('li').addClass('active').siblings().removeClass('active');  
         }
     }
 });

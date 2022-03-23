@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::prefix('segment')->group(function () {
         Route::get('/' , [SegmentController::class,'showSegments'])->name('segment.list');
         Route::get('/create', [SegmentController::class,'createSegment'])->name('segment.create');
+        Route::get('/create/{campaign}', [SegmentController::class,'createSegment'])->name('campsegment.create');
         Route::post('/create', [SegmentController::class,'saveSegment']);
         Route::get('/edit/{id}', [SegmentController::class,'getSegment'])->name('segment.edit');
         Route::put('/edit/{id}', [SegmentController::class,'saveSegment'])->name('segment.update');
